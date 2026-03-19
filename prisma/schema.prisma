@@ -7,8 +7,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
+datasource db {x
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Categoria {
