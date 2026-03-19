@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getProductoBySlug } from '@/lib/productos'
 import ImageGallery from '@/components/ImageGallery'
 
+import AddToCartButton from '@/components/AddToCartButton' // boton
 interface Props {
   params: Promise<{ slug: string }>
 }
@@ -57,12 +58,7 @@ export default async function ProductoPage({ params }: Props) {
               {producto.stock > 0 ? producto.stock + " unidades disponibles" : "Sin stock"}
             </span>
           </div>
-          <button
-            disabled={producto.stock === 0}
-            className="w-full bg-gray-900 text-white py-3 px-6 rounded-xl font-medium hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {producto.stock > 0 ? "Agregar al carrito" : "Sin stock"}
-          </button>
+          <AddToCartButton producto={producto as any} />
         </div>
       </div>
     </div>
