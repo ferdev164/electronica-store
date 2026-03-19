@@ -2,7 +2,9 @@ import { notFound } from 'next/navigation'
 import { getProductoBySlug } from '@/lib/productos'
 import ImageGallery from '@/components/ImageGallery'
 
-import AddToCartButton from '@/components/AddToCartButton' // boton
+import AddToCartButton from '@/components/AddToCartButton' // boton carrito
+import ConsultarWhatsApp from '@/components/ConsultarWhatsApp'
+import WhatsAppButton from '@/components/WhatsAppButton'   // boton whatsap
 interface Props {
   params: Promise<{ slug: string }>
 }
@@ -59,6 +61,7 @@ export default async function ProductoPage({ params }: Props) {
             </span>
           </div>
           <AddToCartButton producto={producto as any} />
+          <ConsultarWhatsApp nombreProducto={producto.nombre} />
         </div>
       </div>
     </div>

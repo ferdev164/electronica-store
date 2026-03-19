@@ -4,6 +4,8 @@ import { useCartStore } from '@/store/cartStore'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { generarMensajePedido, generarUrlWhatsApp } from '@/lib/whatsapp'
+
 export default function CarritoPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCartStore()
 
@@ -18,6 +20,12 @@ export default function CarritoPage() {
     )
   }
 
+  const handleEnviarPedido = () => {
+  const mensaje = generarMensajePedido(items)
+  const url = generarUrlWhatsApp(mensaje)
+  window.open(url, '_blank')
+  }
+  
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">Resumen del pedido</h1>
@@ -84,12 +92,12 @@ export default function CarritoPage() {
           >
             Vaciar carrito
           </button>
-          <Link
-            href="/carrito/whatsapp"
+          <button
+            onClick={handleEnviarPedido}
             className="flex-1 py-3 rounded-xl bg-green-500 text-white font-medium text-sm text-center hover:bg-green-600 transition-colors"
           >
             Enviar por WhatsApp
-          </Link>
+          </button>
         </div>
       </div>
     </div>

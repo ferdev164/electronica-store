@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar'
 import CartSidebar from '@/components/CartSidebar'
 import './globals.css'
 
+import WhatsAppButton from '@/components/WhatsAppButton'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -21,6 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Navbar />
         <CartSidebar />
+        <WhatsAppButton />
         <main>{children}</main>
       </body>
     </html>
