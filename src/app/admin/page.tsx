@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getServerSession } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
