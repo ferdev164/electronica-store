@@ -12,9 +12,31 @@ export async function PATCH(
   const { id } = await context.params
   const body = await request.json()
 
+  await prisma.imagenProducto.deleteMany({
+    where: { productoId: Number(id) },
+  })
+
   const producto = await prisma.producto.update({
     where: { id: Number(id) },
-    data: body,
+    data: {
+      nombre: body.nombre,
+      descripcion: body.descripcion || null,
+      precio: body.precio,
+      stock: body.stock,
+      voltaje: body.voltaje || null,
+      protocolo: body.protocolo || null,
+      tipo_salida: body.tipo_salida || null,
+      pdf_url: body.pdf_url || null,
+      activo: body.activo,
+      categoriaId: body.categoriaId,
+      imagenes: {
+        create: body.imagenes.map((img: { url: string; alt: string }, index: number) => ({
+          url: img.url,
+          alt: img.alt,
+          orden: index,
+        })),
+      },
+    },
   })
 
   return NextResponse.json(producto)

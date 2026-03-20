@@ -20,7 +20,7 @@ export default function Navbar() {
     <header className="border-b border-gray-100 bg-white sticky top-0 z-30">
       <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="font-semibold text-gray-900 text-lg">
-          Mecatronica Store
+          Electronica Store
         </Link>
         <div className="flex items-center gap-6">
           <Link href="/productos" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
