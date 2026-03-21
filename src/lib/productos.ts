@@ -81,3 +81,20 @@ export async function getCategoriasPorLinea(slugsCategorias: string[]) {
     orderBy: { nombre: 'asc' },
   })
 }
+
+// 
+export async function getProductosRelacionados(productoId: number, categoriaId: number) {
+  return prisma.producto.findMany({
+    where: {
+      activo: true,
+      categoriaId,
+      id: { not: productoId },
+    },
+    include: {
+      categoria: true,
+      imagenes: { orderBy: { orden: 'asc' } },
+    },
+    take: 4,
+    orderBy: { createdAt: 'desc' },
+  })
+}
