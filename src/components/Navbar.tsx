@@ -40,12 +40,12 @@ export default function Navbar() {
             </div>
           </form>
           <div className="flex items-center gap-6 ml-auto">
-            <Link href="/productos" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/productos" className="cursor-pointer hover:text-emerald-600 transition-colors">
               Catalogo
             </Link>
             <button
               onClick={openCart}
-              className="relative flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+              className="cursor-pointer hover:text-emerald-600 transition-colors"
             >
               Carrito
               {count > 0 && (

@@ -14,7 +14,10 @@ export default async function HomePage() {
     <div>
 
       {/* Hero */}
-      <section className="bg-white py-20 border-b border-gray-100">
+      <section className="bg-white py-20 border-b border-gray-100" 
+                  style={{
+                backgroundImage: "linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('/ruta/a/tu/imagen-industrial.jpg')",
+              }}> 
         <div className="max-w-4xl mx-auto px-4 text-center">
           <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-medium px-3 py-1 rounded-full mb-6 border border-emerald-100">
             Soluciones industriales — Todo el Peru
