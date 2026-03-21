@@ -4,6 +4,9 @@ import Navbar from '@/components/Navbar'
 import CartSidebar from '@/components/CartSidebar'
 import './globals.css'
 
+import Footer from '@/components/Footer'
+import ScrollToTop from '@/components/ScrollToTop'
+
 import WhatsAppButton from '@/components/WhatsAppButton'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -24,7 +27,9 @@ export default function RootLayout({
         <Navbar />
         <CartSidebar />
         <WhatsAppButton />
+        <ScrollToTop />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   )
