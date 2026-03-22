@@ -10,19 +10,31 @@ export async function GET(request: NextRequest) {
 
   try {
     const palabras = q.split(/\s+/).filter(Boolean)
+    const terminoLike = '%' + q + '%'
 
     const productos = await prisma.producto.findMany({
       where: {
         activo: true,
-        AND: palabras.map((palabra) => ({
-          OR: [
-            { nombre: { contains: palabra, mode: 'insensitive' as const } },
-            { descripcion: { contains: palabra, mode: 'insensitive' as const } },
-            { voltaje: { contains: palabra, mode: 'insensitive' as const } },
-            { protocolo: { contains: palabra, mode: 'insensitive' as const } },
-            { tipo_salida: { contains: palabra, mode: 'insensitive' as const } },
-          ],
-        })),
+        AND: palabras.map((palabra) => {
+          const p = palabra.toLowerCase()
+            .replace(/[áàä]/g, 'a')
+            .replace(/[éèë]/g, 'e')
+            .replace(/[íìï]/g, 'i')
+            .replace(/[óòö]/g, 'o')
+            .replace(/[úùü]/g, 'u')
+            .replace(/ñ/g, 'n')
+
+          const variantes = [palabra, p]
+          return {
+            OR: variantes.flatMap((v) => [
+              { nombre: { contains: v, mode: 'insensitive' as const } },
+              { descripcion: { contains: v, mode: 'insensitive' as const } },
+              { voltaje: { contains: v, mode: 'insensitive' as const } },
+              { protocolo: { contains: v, mode: 'insensitive' as const } },
+              { tipo_salida: { contains: v, mode: 'insensitive' as const } },
+            ]),
+          }
+        }),
       },
       include: {
         categoria: { select: { nombre: true } },
@@ -34,7 +46,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(productos)
   } catch (error) {
-    console.error('Error en busqueda:', error)
-    return NextResponse.json([], { status: 200 })
+    console.error('Error busqueda:', error)
+    return NextResponse.json([])
   }
 }

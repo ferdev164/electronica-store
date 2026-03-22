@@ -69,18 +69,36 @@ export async function getProductos(params?: {
         },
       })
     } catch {
+      const palabras = termino.split(/\s+/).filter(Boolean)
+
+      const normalizarPalabra = (palabra: string) =>
+        palabra.toLowerCase()
+          .replace(/[áàä]/g, 'a')
+          .replace(/[éèë]/g, 'e')
+          .replace(/[íìï]/g, 'i')
+          .replace(/[óòö]/g, 'o')
+          .replace(/[úùü]/g, 'u')
+          .replace(/ñ/g, 'n')
+
       return prisma.producto.findMany({
         where: {
           activo: true,
           ...(params.categoriaSlug && {
             categoria: { slug: params.categoriaSlug },
           }),
-          OR: [
-            { nombre: { contains: termino, mode: 'insensitive' } },
-            { descripcion: { contains: termino, mode: 'insensitive' } },
-            { voltaje: { contains: termino, mode: 'insensitive' } },
-            { protocolo: { contains: termino, mode: 'insensitive' } },
-          ],
+          AND: palabras.map((palabra) => {
+            const p = normalizarPalabra(palabra)
+            const variantes = [...new Set([palabra, p])]
+            return {
+              OR: variantes.flatMap((v) => [
+                { nombre: { contains: v, mode: 'insensitive' as const } },
+                { descripcion: { contains: v, mode: 'insensitive' as const } },
+                { voltaje: { contains: v, mode: 'insensitive' as const } },
+                { protocolo: { contains: v, mode: 'insensitive' as const } },
+                { tipo_salida: { contains: v, mode: 'insensitive' as const } },
+              ]),
+            }
+          }),
         },
         include: {
           categoria: true,
@@ -89,6 +107,7 @@ export async function getProductos(params?: {
         orderBy: { createdAt: 'desc' },
       })
     }
+
   }
 
   return prisma.producto.findMany({
