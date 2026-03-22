@@ -5,6 +5,8 @@ import { useCartStore } from '@/store/cartStore'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import SearchBar from './SearchBar'
+
 export default function Navbar() {
   const { openCart, totalItems } = useCartStore()
   const count = totalItems()
@@ -25,20 +27,7 @@ export default function Navbar() {
           <Link href="/" className="font-semibold text-gray-900 text-lg whitespace-nowrap">
             Electronica Store
           </Link>
-          <form onSubmit={handleBusqueda} className="flex-1 max-w-xl">
-            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-              </svg>
-              <input
-                type="text"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-                placeholder="Buscar productos, referencias..."
-                className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
-              />
-            </div>
-          </form>
+          <SearchBar />
           <div className="flex items-center gap-6 ml-auto">
             <Link href="/productos" className="cursor-pointer hover:text-emerald-600 transition-colors">
               Catalogo
