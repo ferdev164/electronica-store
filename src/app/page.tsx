@@ -16,16 +16,19 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="bg-white py-20 border-b border-gray-100" 
                   style={{
-                backgroundImage: "linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('/ruta/a/tu/imagen-industrial.jpg')",
+                backgroundImage: "linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('/Gemini_Generated_Image_iximfziximfzixim.png')",
+                backgroundSize: "cover",    // Esta es la clase clave: hace que la imagen escale y recorte para cubrir todo.
+                backgroundPosition: "50% 40%", // Mantiene el centro de la imagen (el técnico) visible.
+                backgroundRepeat: "no-repeat", // Evita que se repita como mosaico.
               }}> 
         <div className="max-w-4xl mx-auto px-4 text-center">
           <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-medium px-3 py-1 rounded-full mb-6 border border-emerald-100">
             Soluciones industriales — Todo el Peru
           </span>
-          <h1 className="text-4xl font-semibold text-gray-900 leading-tight mb-4">
+          <h1 className="text-4xl font-semibold text-white leading-tight mb-4">
             Automatización, control electrico<br />y conectividad industrial
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
             Diseñamos tableros, integramos redes industriales y suministramos componentes tecnicos 
             para empresas en todo el Peru. Soluciones completas a la mano.
           </p>
@@ -37,7 +40,7 @@ export default async function HomePage() {
               href={"https://wa.me/" + process.env.NEXT_PUBLIC_WHATSAPP_NUMBER + "?text=" + encodeURIComponent("Hola, quisiera informacion sobre sus soluciones industriales.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-gray-200 text-gray-700 px-8 py-3 rounded-xl font-medium hover:bg-gray-50 transition-colors text-sm flex items-center gap-2"
+              className="border border-gray-300 text-white px-8 py-3 rounded-xl font-medium  transition-colors text-sm flex items-center gap-2 hover:text-emerald-500"
             >
               Consultar por WhatsApp
             </a>

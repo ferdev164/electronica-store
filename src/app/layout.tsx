@@ -12,8 +12,8 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Mecatronica Store',
-  description: 'Componentes mecatronicos y electronicos de alto rendimiento',
+  title: 'Electronica Store',
+  description: 'Automatización, control electrico y conectividad industrial',
 }
 
 export default function RootLayout({
