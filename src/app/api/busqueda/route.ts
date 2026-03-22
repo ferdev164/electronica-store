@@ -9,18 +9,20 @@ export async function GET(request: NextRequest) {
   if (q.length < 2) return NextResponse.json([])
 
   try {
-    const terminoLike = '%' + q + '%'
+    const palabras = q.split(/\s+/).filter(Boolean)
 
     const productos = await prisma.producto.findMany({
       where: {
         activo: true,
-        OR: [
-          { nombre: { contains: q, mode: 'insensitive' } },
-          { descripcion: { contains: q, mode: 'insensitive' } },
-          { voltaje: { contains: q, mode: 'insensitive' } },
-          { protocolo: { contains: q, mode: 'insensitive' } },
-          { tipo_salida: { contains: q, mode: 'insensitive' } },
-        ],
+        AND: palabras.map((palabra) => ({
+          OR: [
+            { nombre: { contains: palabra, mode: 'insensitive' as const } },
+            { descripcion: { contains: palabra, mode: 'insensitive' as const } },
+            { voltaje: { contains: palabra, mode: 'insensitive' as const } },
+            { protocolo: { contains: palabra, mode: 'insensitive' as const } },
+            { tipo_salida: { contains: palabra, mode: 'insensitive' as const } },
+          ],
+        })),
       },
       include: {
         categoria: { select: { nombre: true } },
