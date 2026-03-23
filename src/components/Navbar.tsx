@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useCartStore } from '@/store/cartStore'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import SearchBar from './SearchBar'
 
@@ -28,9 +27,8 @@ export default function Navbar() {
 
           <div className="flex items-center gap-6 ml-auto">
             <Link href="/productos" className="hidden sm:block cursor-pointer hover:text-emerald-600 transition-colors">
-              Catalogo
+              Catálogo
             </Link>
-            
             
             <button
               onClick={openCart}
@@ -89,7 +87,7 @@ export default function Navbar() {
               Redes Industriales & IoT
             </Link>
             <Link href="/productos" className="text-gray-400 hover:text-white hover:bg-slate-800 text-xs px-4 py-3 transition-colors border-r border-slate-800">
-              Catalogo
+              Catálogo
             </Link>
             <a
               href={"https://wa.me/" + process.env.NEXT_PUBLIC_WHATSAPP_NUMBER + "?text=" + encodeURIComponent("Hola, quisiera cotizar un proyecto.")}
@@ -149,7 +147,7 @@ export default function Navbar() {
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M3 3h18M3 9h18M3 15h18M3 21h18"/>
                     </svg>
-                    Catalogo completo
+                    Catálogo completo
                   </Link>
                   <a
                     href={"https://wa.me/" + process.env.NEXT_PUBLIC_WHATSAPP_NUMBER + "?text=" + encodeURIComponent("Hola, quisiera cotizar un proyecto.")}
