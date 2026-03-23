@@ -32,7 +32,7 @@ export default async function CatalogoPage({ searchParams }: Props) {
           <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">
             Categorias
           </p>
-          <ul className="flex flex-wrap gap-2 md:flex-col md:gap-0 md:space-y-1">
+          <ul className="flex overflow-x-auto pb-2 scrollbar-hide flex-nowrap md:flex-wrap md:flex-col gap-2 md:gap-0 md:space-y-1">
             <li>
               <a
                 href="/productos"
