@@ -31,14 +31,14 @@ export default async function ControlPage({ searchParams }: Props) {
         <p className="text-gray-500 text-sm">{linea.descripcion}</p>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         <FiltrosCatalogo
             categorias={categorias}
             baseUrl="/control"
             color="blue"
         />
 
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <p className="text-sm text-gray-400 mb-4">{productos.length} productos disponibles</p>
           {productos.length === 0 ? (
             <div className="text-center py-16 text-gray-400">

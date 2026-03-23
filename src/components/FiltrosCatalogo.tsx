@@ -34,15 +34,15 @@ export default function FiltrosCatalogo({ categorias, baseUrl, color }: Props) {
   }
 
   return (
-    <aside className="w-48 flex-shrink-0">
+    <aside className="w-full md:w-48 flex-shrink-0">
       <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">
         Categorias
       </p>
-      <ul className="space-y-1">
+      <ul className="flex overflow-x-auto pb-2 scrollbar-hide flex-nowrap md:flex-wrap md:flex-col gap-2 md:gap-0 md:space-y-1">
         <li>
           <button
             onClick={() => navegar()}
-            className={"w-full text-left block text-sm px-3 py-2 rounded-lg transition-colors " + (!categoriaActiva ? colores[color] : 'text-gray-600 hover:bg-gray-50')}
+            className={"inline-block md:block text-sm px-3 py-1.5 md:py-2 rounded-lg transition-colors " + (!categoriaActiva ? colores[color] : 'text-gray-600 hover:bg-gray-50')}
           >
             Todos
           </button>
@@ -51,7 +51,7 @@ export default function FiltrosCatalogo({ categorias, baseUrl, color }: Props) {
           <li key={cat.id}>
             <button
               onClick={() => navegar(cat.slug)}
-              className={"w-full text-left block text-sm px-3 py-2 rounded-lg transition-colors " + (categoriaActiva === cat.slug ? colores[color] : 'text-gray-600 hover:bg-gray-50')}
+              className={"inline-block md:block text-sm px-3 py-1.5 md:py-2 rounded-lg transition-colors " + (categoriaActiva === cat.slug ? colores[color] : 'text-gray-600 hover:bg-gray-50')}
             >
               {cat.nombre}
             </button>
