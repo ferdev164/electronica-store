@@ -1,5 +1,4 @@
 import { prisma } from './db'
-
 import { Prisma } from '@prisma/client'
 
 export async function getProductos(params?: {
@@ -8,97 +7,55 @@ export async function getProductos(params?: {
 }) {
   if (params?.busqueda) {
     const termino = params.busqueda.trim()
-    const terminoLike = '%' + termino + '%'
+    const palabras = termino.split(/\s+/).filter(Boolean)
 
     try {
-      const palabras = termino.split(/\s+/).filter(Boolean)
-      const terminoLike = '%' + termino + '%'
-
       const ids = await prisma.$queryRaw<{ id: number }[]>`
-        SELECT DISTINCT p.id,
-          GREATEST(
-            similarity(p.nombre, ${termino}),
-            CASE WHEN p.nombre ILIKE ${terminoLike} THEN 1.0 ELSE 0 END
-          ) as relevancia
+        SELECT DISTINCT p.id
         FROM "Producto" p
         INNER JOIN "Categoria" c ON p."categoriaId" = c.id
         WHERE p.activo = true
-          AND (
-            p.nombre ILIKE ${terminoLike}
-            OR COALESCE(p.descripcion, '') ILIKE ${terminoLike}
-            OR COALESCE(p.voltaje, '') ILIKE ${terminoLike}
-            OR COALESCE(p.protocolo, '') ILIKE ${terminoLike}
-            OR similarity(p.nombre, ${termino}) > 0.1
-          )
-          AND (${params.categoriaSlug
-            ? Prisma.sql`c.slug = ${params.categoriaSlug}`
-            : Prisma.sql`1=1`
-          })
-        ORDER BY relevancia DESC
+        AND (
+          ${Prisma.join(
+            palabras.map(palabra => Prisma.sql`(
+              unaccent(lower(p.nombre)) ILIKE unaccent(lower(${'%' + palabra + '%'}))
+              OR unaccent(lower(COALESCE(p.descripcion,''))) ILIKE unaccent(lower(${'%' + palabra + '%'}))
+              OR unaccent(lower(COALESCE(p.voltaje,''))) ILIKE unaccent(lower(${'%' + palabra + '%'}))
+              OR unaccent(lower(COALESCE(p.protocolo,''))) ILIKE unaccent(lower(${'%' + palabra + '%'}))
+            )`),
+            ' AND '
+          )}
+        )
+        AND (${params.categoriaSlug
+          ? Prisma.sql`c.slug = ${params.categoriaSlug}`
+          : Prisma.sql`1=1`
+        })
         LIMIT 50
       `
 
-      const idsSimples = ids.map((p) => p.id)
-
-      const porPalabras = await prisma.producto.findMany({
-        where: {
-          activo: true,
-          AND: palabras.map((palabra) => ({
-            OR: [
-              { nombre: { contains: palabra, mode: 'insensitive' as const } },
-              { descripcion: { contains: palabra, mode: 'insensitive' as const } },
-              { voltaje: { contains: palabra, mode: 'insensitive' as const } },
-              { protocolo: { contains: palabra, mode: 'insensitive' as const } },
-            ],
-          })),
-          ...(params.categoriaSlug && {
-            categoria: { slug: params.categoriaSlug },
-          }),
-        },
-        select: { id: true },
-      })
-
-      const todoIds = [...new Set([...idsSimples, ...porPalabras.map(p => p.id)])]
-      if (todoIds.length === 0) return []
+      if (ids.length === 0) return []
 
       return prisma.producto.findMany({
-        where: { id: { in: todoIds } },
+        where: { id: { in: ids.map(p => p.id) } },
         include: {
           categoria: true,
           imagenes: { orderBy: { orden: 'asc' } },
         },
       })
-    } catch {
-      const palabras = termino.split(/\s+/).filter(Boolean)
-
-      const normalizarPalabra = (palabra: string) =>
-        palabra.toLowerCase()
-          .replace(/[áàä]/g, 'a')
-          .replace(/[éèë]/g, 'e')
-          .replace(/[íìï]/g, 'i')
-          .replace(/[óòö]/g, 'o')
-          .replace(/[úùü]/g, 'u')
-          .replace(/ñ/g, 'n')
-
+    } catch (error) {
+      console.error('Error busqueda productos:', error)
       return prisma.producto.findMany({
         where: {
           activo: true,
           ...(params.categoriaSlug && {
             categoria: { slug: params.categoriaSlug },
           }),
-          AND: palabras.map((palabra) => {
-            const p = normalizarPalabra(palabra)
-            const variantes = [...new Set([palabra, p])]
-            return {
-              OR: variantes.flatMap((v) => [
-                { nombre: { contains: v, mode: 'insensitive' as const } },
-                { descripcion: { contains: v, mode: 'insensitive' as const } },
-                { voltaje: { contains: v, mode: 'insensitive' as const } },
-                { protocolo: { contains: v, mode: 'insensitive' as const } },
-                { tipo_salida: { contains: v, mode: 'insensitive' as const } },
-              ]),
-            }
-          }),
+          OR: [
+            { nombre: { contains: termino, mode: 'insensitive' } },
+            { descripcion: { contains: termino, mode: 'insensitive' } },
+            { voltaje: { contains: termino, mode: 'insensitive' } },
+            { protocolo: { contains: termino, mode: 'insensitive' } },
+          ],
         },
         include: {
           categoria: true,
@@ -107,7 +64,6 @@ export async function getProductos(params?: {
         orderBy: { createdAt: 'desc' },
       })
     }
-
   }
 
   return prisma.producto.findMany({
@@ -137,26 +93,18 @@ export async function getProductoBySlug(slug: string) {
 
 export async function getCategorias() {
   return prisma.categoria.findMany({
-    where: {
-      productos: {
-        some: {
-          activo: true,
-        },
-      },
-    },
+    where: { productos: { some: { activo: true } } },
     orderBy: { nombre: 'asc' },
   })
 }
-// Catalogo de por cada linea
+
 export async function getProductosPorLinea(slugsCategorias: string[], params?: {
   busqueda?: string
 }) {
   return prisma.producto.findMany({
     where: {
       activo: true,
-      categoria: {
-        slug: { in: slugsCategorias },
-      },
+      categoria: { slug: { in: slugsCategorias } },
       ...(params?.busqueda && {
         OR: [
           { nombre: { contains: params.busqueda, mode: 'insensitive' } },
@@ -182,7 +130,6 @@ export async function getCategoriasPorLinea(slugsCategorias: string[]) {
   })
 }
 
-// 
 export async function getProductosRelacionados(productoId: number, categoriaId: number) {
   return prisma.producto.findMany({
     where: {
