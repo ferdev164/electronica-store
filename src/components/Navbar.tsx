@@ -27,14 +27,14 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-6 ml-auto">
-            <Link href="/productos" className="cursor-pointer hover:text-emerald-600 transition-colors">
+            <Link href="/productos" className="hidden sm:block cursor-pointer hover:text-emerald-600 transition-colors">
               Catalogo
             </Link>
             
             
             <button
               onClick={openCart}
-              className="relative flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+              className="cursor-pointer relative flex items-center gap-1 text-sm text-gray-600 hover:text-emerald-600 transition-colors"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
