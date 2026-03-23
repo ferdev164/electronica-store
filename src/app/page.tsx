@@ -25,9 +25,12 @@ export default async function HomePage() {
           <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-medium px-3 py-1 rounded-full mb-6 border border-emerald-100">
             Soluciones industriales — Todo el Peru
           </span>
-          <h1 className="text-4xl font-semibold text-white leading-tight mb-4">
-            Automatización, control electrico<br />y conectividad industrial
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+          <span className="block mb-2">Automatización, control eléctrico</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-emerald-400 to-emerald-500">
+            y soluciones industriales
+          </span>
+        </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
             Diseñamos tableros, integramos redes industriales y suministramos componentes tecnicos 
             para empresas en todo el Peru. Soluciones completas a la mano.

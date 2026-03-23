@@ -15,7 +15,7 @@ export const LINEAS = {
     nombre: 'Redes Industriales & IoT',
     descripcion: 'Equipos multiprotocolo, Modbus, Profibus, MQTT y monitoreo remoto',
     color: 'emerald',
-    slugs: ['modulos-comunicacion'],
+    slugs: ['modulos-comunicacion', 'comunicacion'],
   },
 } as const
 

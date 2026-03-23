@@ -32,9 +32,9 @@ export default function Footer() {
             <p className="text-white text-sm font-medium mb-4">Lineas de servicio</p>
             <ul className="space-y-2">
               {[
-                { label: "Automatizacion & Control", href: "/productos?categoria=control-industrial" },
-                { label: "Electricidad", href: "/productos?categoria=electricidad" },
-                { label: "Redes Industriales & IoT", href: "/productos?categoria=modulos-comunicacion" },
+                { label: "Automatizacion & Control", href: "/control" },
+                { label: "Electricidad", href: "/electricidad" },
+                { label: "Redes Industriales & IoT", href: "/redes" },
                 { label: "Catalogo completo", href: "/productos" },
               ].map((item) => (
                 <li key={item.label}>
